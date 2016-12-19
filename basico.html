@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="Basica">
+<head>
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
+	<script src="js/controlador.js"></script>
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+	<style type="text/css">
+		.add {
+			color: green;
+		}
+
+		.modify {
+			color: orange;
+		}
+
+		.seleccionado {
+			background-color: lightyellow;
+		}
+
+		.aniadido {
+			background-color: #B9FEA7;
+		}
+
+		.modificado {
+			background-color: #FFC893;
+		}
+	</style>
+	<title>AngularJS básico</title>
+</head>
+<body ng-controller="EjemploController">
+	<div class="col-md-2"></div>
+	<div align="center" class="col-md-8">
+		<h2 class="jumbotron">Clientes</h2>
+		<br>
+		<div class="col-md-{{tamanioCampos}}">
+			<label for="Orden">Orden</label>
+			<select name="Orden" class="form-control" ng-model="orden">
+				<option value="nombre">Nombre</option>
+				<option value="apellidos">Apellidos</option>
+				<option value="dni">DNI</option>
+			</select>
+			<br>
+			<input type="text" name="buscar" placeholder="Busca" class="form-control" ng-model="buscar">
+		</div>
+		<div class="col-md-{{tamanioBotonCampos}}" style="margin-top: 5%;">
+			<button name="limpiarCampos" ng-click="LimpiarCampos()" class="btn btn-primary {{vista}}-lg">Limpiar campos</button>
+		</div>
+		<div class="col-md-12" style="margin-top: 5%;">
+		<table class="table table-hover table-bordered">
+			<th>Nombre</th>
+			<th>DNI</th>
+			<th>Actions</th>
+			<tr ng-repeat="cliente in clientes | orderBy: orden | filter: buscar" ng-click="Destacar($index)" ng-class="{seleccionado: $index == filaSeleccionada, aniadido: isAdded && $last, modificado: isModified && $index == filaSeleccionada}">
+				<td>{{cliente.nombre}} {{cliente.apellidos}}</td>
+				<td>{{cliente.dni}}</td>
+				<td>
+					<button ng-click="Eliminar($index)" class="btn btn-danger">Eliminar</button>
+					<button ng-click="EnviarForm(cliente)" class="btn btn-warning">Modificar</button>
+				</td>
+			</tr>
+		</table>
+		<p ng-class="{add: isAdded, modify: isModified}"><b>{{mensaje}}</b></p>
+		</div>
+	</div>
+	<div class="col-md-2"></div>
+
+	<div class="col-md-8" align="center" style="margin-left: 16.5%; margin-top:3%;">
+		<form ng-show="estado.visible">
+			<input type="hidden" name="id" ng-model="id">
+			<div class="form-group" align="center">
+				<label for="nombre">Nombre</label>
+				<input type="text" name="nombre" class="form-control" ng-model="nombre">
+			</div>
+			<div class="form-group">
+				<label for="apellidos">Apellidos</label>
+				<input type="text" name="apellidos" class="form-control" ng-model="apellidos">
+			</div>
+			<div class="form-group">
+				<label for="dni">DNI</label>
+				<input type="text" name="dni" class="form-control" ng-model="dni">
+			</div>
+			<button ng-click="Aniadir()" class="btn btn-success">Añadir</button>
+			<button ng-click="Modificar()" class="btn btn-warning">Modificar</button>
+			<button ng-click="LimpiarForm()" class="btn btn-primary">Limpiar formulario</button>
+		</form>
+	</div>
+</body>
+</html>
